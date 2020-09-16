@@ -15,6 +15,9 @@ val arrowMetaVersion: String by project
 dependencies {
     compileOnly(kotlin("stdlib"))
     compileOnly(kotlin("compiler-embeddable"))
+    implementation(kotlin("scripting-jsr223"))
+    implementation(kotlin("script-util"))
+    implementation(kotlin("script-runtime"))
     compileOnly("io.arrow-kt:compiler-plugin:$arrowMetaVersion")
 }
 
