@@ -1,9 +1,7 @@
-import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     kotlin("jvm")
-    id("com.github.johnrengelman.shadow")
 }
 
 group = "dev.ahmedmourad"
@@ -18,8 +16,6 @@ dependencies {
     implementation(kotlin("stdlib"))
     compileOnly("io.arrow-kt:arrow-annotations:$arrowVersion")
 
-    api(project(path = ":plugin", configuration = "shadow"))
-
     testImplementation("io.kotlintest:kotlintest-runner-junit4:$kotlinTestVersion")
 }
 
@@ -31,11 +27,9 @@ tasks {
         freeCompilerArgs =
             listOf("-Xplugin=${project.rootDir}/plugin/build/libs/plugin-$evalVersion-all.jar")
     }
+    compileKotlin.dependsOn(":plugin:createNewPlugin")
     compileTestKotlin.kotlinOptions {
         jvmTarget = jvmTargetVersion
-    }
-    named<ShadowJar>("shadowJar") {
-        configurations = listOf(project.configurations.compileOnly.get())
     }
     jar {
         manifest {

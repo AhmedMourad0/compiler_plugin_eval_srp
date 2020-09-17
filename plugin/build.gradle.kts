@@ -1,9 +1,7 @@
-import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     kotlin("jvm")
-    id("com.github.johnrengelman.shadow")
 }
 
 group = "dev.ahmedmourad"
@@ -15,9 +13,6 @@ val arrowMetaVersion: String by project
 dependencies {
     compileOnly(kotlin("stdlib"))
     compileOnly(kotlin("compiler-embeddable"))
-    implementation(kotlin("scripting-jsr223"))
-    implementation(kotlin("script-util"))
-    implementation(kotlin("script-runtime"))
     compileOnly("io.arrow-kt:compiler-plugin:$arrowMetaVersion")
 }
 
@@ -27,14 +22,14 @@ tasks {
             jvmTarget = jvmTargetVersion
         }
     }
-    named<ShadowJar>("shadowJar") {
-        configurations = listOf(project.configurations.compileOnly.get())
-        dependencies {
-            exclude("org.jetbrains.kotlin:kotlin-stdlib")
-            exclude("org.jetbrains.kotlin:kotlin-compiler-embeddable")
+    // Create a new JAR with: Arrow Meta + new plugin
+    register<org.gradle.jvm.tasks.Jar>("createNewPlugin") {
+        dependsOn(classes)
+        archiveClassifier.set("all")
+        from("build/classes/kotlin/main")
+        from("build/resources/main")
+        from(sourceSets.main.get().compileClasspath.find { it.absolutePath.contains("io.arrow-kt\\compiler-plugin") }!!.let(::zipTree)) {
+            exclude("META-INF/services/org.jetbrains.kotlin.compiler.plugin.ComponentRegistrar")
         }
-    }
-    build {
-        dependsOn(shadowJar)
     }
 }
