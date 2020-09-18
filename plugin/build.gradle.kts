@@ -13,15 +13,6 @@ val arrowMetaVersion: String by project
 dependencies {
     compileOnly(kotlin("stdlib"))
     compileOnly(kotlin("compiler-embeddable"))
-//    kotlinCompilerClasspath(kotlin("scripting-jsr223"))
-//    kotlinCompilerClasspath(kotlin("script-runtime"))
-    kotlinCompilerClasspath("org.jetbrains.kotlin:kotlin-script-util:1.3.61") {
-        exclude("org.jetbrains.kotlin", "kotlin-stdlib")
-        exclude("org.jetbrains.kotlin", "kotlin-compiler")
-        exclude("org.jetbrains.kotlin", "kotlin-compiler-embeddable")
-    }
-    kotlinCompilerClasspath("org.jetbrains.kotlin:kotlin-compiler-embeddable:1.3.61")
-    kotlinCompilerClasspath("org.jetbrains.kotlin:kotlin-scripting-compiler-embeddable:1.3.61")
     compileOnly("io.arrow-kt:compiler-plugin:$arrowMetaVersion")
 }
 

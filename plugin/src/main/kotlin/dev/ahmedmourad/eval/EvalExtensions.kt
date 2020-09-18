@@ -26,7 +26,11 @@ internal fun Meta.impl(): AnalysisHandler = analysis(
     doAnalysis = Noop.nullable7<AnalysisResult>(),
     analysisCompleted = { _, _, _, _ ->
         try {
-            eval("println(\"X\")")
+            messageCollector?.report(
+                CompilerMessageSeverity.ERROR,
+                eval("\"X\"").toString(),
+                null
+            )
         } catch (e: ScriptException) {
             messageCollector?.report(
                 CompilerMessageSeverity.ERROR,

@@ -15,6 +15,13 @@ val kotlinTestVersion: String by project
 dependencies {
     implementation(kotlin("stdlib"))
     compileOnly("io.arrow-kt:arrow-annotations:$arrowVersion")
+    kotlinCompilerClasspath("org.jetbrains.kotlin:kotlin-script-util:1.3.61") {
+        exclude("org.jetbrains.kotlin", "kotlin-stdlib")
+        exclude("org.jetbrains.kotlin", "kotlin-compiler")
+        exclude("org.jetbrains.kotlin", "kotlin-compiler-embeddable")
+    }
+    kotlinCompilerClasspath("org.jetbrains.kotlin:kotlin-compiler-embeddable:1.3.61")
+    kotlinCompilerClasspath("org.jetbrains.kotlin:kotlin-scripting-compiler-embeddable:1.3.61")
 
     testImplementation("io.kotlintest:kotlintest-runner-junit4:$kotlinTestVersion")
 }
